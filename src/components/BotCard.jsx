@@ -1,7 +1,7 @@
 import React from "react";
 import BotCard from "./BotCard";
 
-function BotCollection({ bots, handleAddToArmy }) {
+export default function BotCollection({ bots, handleAddToArmy }) {
   return (
     <div className="container">
       <h2>Available Bots</h2>
@@ -13,5 +13,3 @@ function BotCollection({ bots, handleAddToArmy }) {
     </div>
   );
 }
-
-export default BotCollection;
