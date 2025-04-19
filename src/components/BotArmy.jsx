@@ -4,7 +4,7 @@ import BotCard from "./BotCard";
 export default function BotArmy({ army, handleRelease, handleDischarge }) {
   return (
     <div className="container">
-      <h2>Your Bot Army</h2>
+      <h2>Bot Army</h2>
       <div className="d-flex flex-wrap">
         {army.map((bot) => (
           <BotCard
