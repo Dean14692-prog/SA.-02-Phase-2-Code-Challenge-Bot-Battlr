@@ -18,7 +18,7 @@ function BotCollection() {
 
   // Filter bots based on the selected class
   const filteredBots = filter
-    ? bots.filter((bot) => bot.bot_class === filter)
+    ? bots.filter((bot) => bot.botClass === filter)
     : bots;
 
   // Sort bots based on the selected property (health, damage, armor)
@@ -26,10 +26,31 @@ function BotCollection() {
     ? [...filteredBots].sort((a, b) => b[sort] - a[sort])
     : filteredBots;
 
-  // Function to enlist a bot into the army
+  // Function to enlist a bot into the army and update the database
   const enlistBot = (bot) => {
-    if (!armyBots.some((armyBot) => armyBot.id === bot.id)) {
+    // Check if the bot is already enlisted
+    const existingBot = armyBots.find((armyBot) => armyBot.id === bot.id);
+
+    // If the bot is not already enlisted
+    if (!existingBot) {
+      // Add the bot to the army in the frontend state
       setArmyBots([...armyBots, bot]);
+
+      // Send a POST request to the backend to update the database
+      fetch("http://localhost:8001/army", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bot),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Bot added to the army:", data);
+        })
+        .catch((error) => {
+          console.error("Error adding bot to the database:", error);
+        });
     }
   };
 
