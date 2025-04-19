@@ -1,7 +1,7 @@
 import React from "react";
 import BotCard from "./BotCard";
 
-export default function YourBotArmy({ army, handleRelease, handleDischarge }) {
+export default function BotArmy({ army, handleRelease, handleDischarge }) {
   return (
     <div className="container">
       <h2>Your Bot Army</h2>
