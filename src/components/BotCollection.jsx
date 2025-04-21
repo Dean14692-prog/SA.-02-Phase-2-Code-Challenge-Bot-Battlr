@@ -29,7 +29,7 @@ function BotCollection() {
   // Enlist a bot into the army and update the database
   function enlistBot(bot){
     // Check if already enlisted
-    if (!armyBots.find((b) => b.id === bot.id)) {
+    if (!armyBots.find((bot) => bot.id === bot.id)) {
       // Add to UI
       setArmyBots([...armyBots, bot]);
 
