@@ -41,7 +41,7 @@ function BotArmy({ armyBots, releaseBot }) {
                       onClick={() => dischargeBot(bot)}
                       className="btn btn-warning"
                     >
-                      x Discharge
+                      Discharge
                     </button>
                   </div>
                 </div>

@@ -3,37 +3,35 @@ import BotCard from "./BotCard";
 import BotArmy from "./BotArmy";
 
 function BotCollection() {
-  const [bots, setBots] = useState([]); // All available bots
-  const [armyBots, setArmyBots] = useState([]); // Enlisted bots
-  const [filter, setFilter] = useState(""); // Filter bots by class
-  const [sort, setSort] = useState(""); // Sort bots by health, damage, or armor
+  const [bots, setBots] = useState([]);
+  const [armyBots, setArmyBots] = useState([]);
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("");
 
-  // Fetch all bots from the backend
   useEffect(() => {
     fetch("http://localhost:8001/bots")
       .then((response) => response.json())
-      .then((data) => setBots(data))
+      .then((data) => {
+        console.log("Fetched bots:", data);
+        setBots(data);
+      })
       .catch((error) => console.error("Error fetching bots:", error));
   }, []);
 
-  // Filter the bots based on selected class
   const filteredBots = filter
-    ? bots.filter((bot) => bot.botClass === filter)
+    ? bots.filter(
+        (bot) => bot.bot_class?.toLowerCase() === filter.toLowerCase()
+      )
     : bots;
 
-  // Sort the bots based on selected property
   const sortedBots = sort
     ? [...filteredBots].sort((a, b) => b[sort] - a[sort])
     : filteredBots;
 
-  // Enlist a bot into the army and update the database
-  function enlistBot(bot){
-    // Check if already enlisted
-    if (!armyBots.find((bot) => bot.id === bot.id)) {
-      // Add to UI
+  function enlistBot(bot) {
+    if (!armyBots.find((b) => b.id === bot.id)) {
       setArmyBots([...armyBots, bot]);
 
-      // Add to backend army list
       fetch("http://localhost:8001/army", {
         method: "POST",
         headers: {
@@ -45,9 +43,8 @@ function BotCollection() {
         .then((data) => console.log("Enlisted:", data))
         .catch((err) => console.error("Error enlisting:", err));
     }
-  };
+  }
 
-  // Remove a bot from the UI army list
   const releaseBot = (bot) => {
     setArmyBots(armyBots.filter((b) => b.id !== bot.id));
   };
@@ -55,6 +52,11 @@ function BotCollection() {
   return (
     <div className="container">
       <h1 className="my-4 text-center">Bot Battlr</h1>
+
+      {/* Army section at the top */}
+      <div className="mb-5">
+        <BotArmy armyBots={armyBots} releaseBot={releaseBot} />
+      </div>
 
       {/* Filter bots by class */}
       <div className="mb-4">
@@ -102,11 +104,6 @@ function BotCollection() {
             <BotCard bot={bot} enlistBot={enlistBot} />
           </div>
         ))}
-      </div>
-
-      {/* Army section */}
-      <div className="mt-5">
-        <BotArmy armyBots={armyBots} releaseBot={releaseBot} />
       </div>
     </div>
   );
