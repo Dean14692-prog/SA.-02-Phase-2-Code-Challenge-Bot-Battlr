@@ -1,12 +1,15 @@
 import React from "react";
 
 function BotArmy({ armyBots, releaseBot }) {
-  const dischargeBot = (botId) => {
-    fetch(`http://localhost:8001/army/${botId}`, {
+  // Discharge the bot from the backend and remove from frontend
+  const dischargeBot = (bot) => {
+    fetch(`http://localhost:8001/army/${bot.id}`, {
       method: "DELETE",
-    }).then(() => {
-      releaseBot(botId);
-    });
+    })
+      .then(() => {
+        releaseBot(bot);
+      })
+      .catch((error) => console.error("Error discharging:", error));
   };
 
   return (
@@ -35,7 +38,7 @@ function BotArmy({ armyBots, releaseBot }) {
                       Release from Army
                     </button>
                     <button
-                      onClick={() => dischargeBot(bot.id)}
+                      onClick={() => dischargeBot(bot)}
                       className="btn btn-warning"
                     >
                       x Discharge

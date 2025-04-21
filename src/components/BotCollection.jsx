@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import BotCard from "./BotCard"; // For displaying individual bot cards
-import BotArmy from "./BotArmy"; // For displaying the army
+import BotCard from "./BotCard";
+import BotArmy from "./BotArmy";
 
 function BotCollection() {
-  const [bots, setBots] = useState([]); // To store the fetched bots
-  const [armyBots, setArmyBots] = useState([]); // To store the enlisted bots
-  const [filter, setFilter] = useState(""); // To store filter based on bot class
-  const [sort, setSort] = useState(""); // To store the sort option
+  const [bots, setBots] = useState([]); // All available bots
+  const [armyBots, setArmyBots] = useState([]); // Enlisted bots
+  const [filter, setFilter] = useState(""); // Filter bots by class
+  const [sort, setSort] = useState(""); // Sort bots by health, damage, or armor
 
-  // Fetch the bots data from the backend (JSON server)
+  // Fetch all bots from the backend
   useEffect(() => {
     fetch("http://localhost:8001/bots")
       .then((response) => response.json())
@@ -16,27 +16,24 @@ function BotCollection() {
       .catch((error) => console.error("Error fetching bots:", error));
   }, []);
 
-  // Filter bots based on the selected class
+  // Filter the bots based on selected class
   const filteredBots = filter
     ? bots.filter((bot) => bot.botClass === filter)
     : bots;
 
-  // Sort bots based on the selected property (health, damage, armor)
+  // Sort the bots based on selected property
   const sortedBots = sort
     ? [...filteredBots].sort((a, b) => b[sort] - a[sort])
     : filteredBots;
 
-  // Function to enlist a bot into the army and update the database
+  // Enlist a bot into the army and update the database
   const enlistBot = (bot) => {
-    // Check if the bot is already enlisted
-    const existingBot = armyBots.find((armyBot) => armyBot.id === bot.id);
-
-    // If the bot is not already enlisted
-    if (!existingBot) {
-      // Add the bot to the army in the frontend state
+    // Check if already enlisted
+    if (!armyBots.find((b) => b.id === bot.id)) {
+      // Add to UI
       setArmyBots([...armyBots, bot]);
 
-      // Send a POST request to the backend to update the database
+      // Add to backend army list
       fetch("http://localhost:8001/army", {
         method: "POST",
         headers: {
@@ -44,35 +41,31 @@ function BotCollection() {
         },
         body: JSON.stringify(bot),
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Bot added to the army:", data);
-        })
-        .catch((error) => {
-          console.error("Error adding bot to the database:", error);
-        });
+        .then((res) => res.json())
+        .then((data) => console.log("Enlisted:", data))
+        .catch((err) => console.error("Error enlisting:", err));
     }
   };
 
-  // Function to release a bot from the army
+  // Remove a bot from the UI army list
   const releaseBot = (bot) => {
-    setArmyBots(armyBots.filter((armyBot) => armyBot.id !== bot.id));
+    setArmyBots(armyBots.filter((b) => b.id !== bot.id));
   };
 
   return (
     <div className="container">
       <h1 className="my-4 text-center">Bot Battlr</h1>
 
-      {/* Filter Bots */}
+      {/* Filter bots by class */}
       <div className="mb-4">
         <label htmlFor="filter" className="form-label">
           Filter by Class:
         </label>
         <select
           id="filter"
-          onChange={(e) => setFilter(e.target.value)}
-          value={filter}
           className="form-select"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
         >
           <option value="">All Classes</option>
           <option value="Support">Support</option>
@@ -84,16 +77,16 @@ function BotCollection() {
         </select>
       </div>
 
-      {/* Sort Bots */}
+      {/* Sort bots */}
       <div className="mb-4">
         <label htmlFor="sort" className="form-label">
           Sort by:
         </label>
         <select
           id="sort"
-          onChange={(e) => setSort(e.target.value)}
-          value={sort}
           className="form-select"
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
         >
           <option value="">None</option>
           <option value="health">Health</option>
@@ -102,19 +95,16 @@ function BotCollection() {
         </select>
       </div>
 
-      {/* Display Bot Collection */}
-      <div className="bot-collection">
-        <h2 className="mb-4">Available Bots</h2>
-        <div className="row">
-          {sortedBots.map((bot) => (
-            <div className="col-md-4 mb-4" key={bot.id}>
-              <BotCard bot={bot} enlistBot={enlistBot} />
-            </div>
-          ))}
-        </div>
+      {/* Display list of bots */}
+      <div className="row">
+        {sortedBots.map((bot) => (
+          <div className="col-md-4 mb-4" key={bot.id}>
+            <BotCard bot={bot} enlistBot={enlistBot} />
+          </div>
+        ))}
       </div>
 
-      {/* Display Enlisted Bots in BotArmy */}
+      {/* Army section */}
       <div className="mt-5">
         <BotArmy armyBots={armyBots} releaseBot={releaseBot} />
       </div>
