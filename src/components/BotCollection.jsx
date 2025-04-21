@@ -27,7 +27,7 @@ function BotCollection() {
     : filteredBots;
 
   // Enlist a bot into the army and update the database
-  const enlistBot = (bot) => {
+  function enlistBot(bot){
     // Check if already enlisted
     if (!armyBots.find((b) => b.id === bot.id)) {
       // Add to UI
