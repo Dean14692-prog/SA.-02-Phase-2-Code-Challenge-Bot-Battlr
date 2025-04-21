@@ -28,8 +28,73 @@
 Before running the project, ensure the following are installed on your system:
 
 - **Node.js**: [Download Node.js](https://nodejs.org/), which also includes npm (Node Package Manager).
-- **JSON Server**: Install JSON Server globally to mock the backend.git 
 
-  To install JSON Server globally, use this command:
-  ```bash
-  npm install -g json-server
+###  Install Dependencies
+```bash 
+npm install
+```
+### Create db.json server
+Then create a db.json file in the project root and add
+```bash 
+{
+  "bots": [
+    {
+      "id": 1,
+      "name": "AlphaBot",
+      "bot_class": "Support",
+      "health": 120,
+      "damage": 40,
+      "armor": 30,
+      "avatar_url": "https://robohash.org/alphabot.png"
+    },
+    {
+      "id": 2,
+      "name": "BetaBot",
+      "bot_class": "Assault",
+      "health": 150,
+      "damage": 70,
+      "armor": 40,
+      "avatar_url": "https://robohash.org/betabot.png"
+    }
+  ]
+}
+```
+### Run json server
+```bash
+npx json-server --watch db.json --port 8001
+```
+###  Run React App
+```bash
+npm start 
+```
+React app will launch at http://localhost:3000.
+
+## How to Use
+- Use the dropdown to **filter** bots by class (e.g., Support, Medic, Assault).
+- Use the sort dropdown to **order bots** by Health, Damage, or Armor.
+- Click **Enlist** to add a bot to your army.
+- In the army section:
+  - Click **Release** to remove the bot from the army (does not delete from database).
+  - Click **Discharge** to remove the bot from the army **and** permanently delete it from the database.
+
+## Contributing
+- Fork the repository to your GitHub.
+- Clone your fork:
+```bash
+git clone git@github.com:your-username/SA.-02-Phase-2-Code-Challenge-Bot-Battlr.git
+```
+- Create a new branch:
+```bash 
+git checkout -b feature-name
+```
+- Make your changes, commit and push:
+```bash
+git commit -m "Added feature"
+```
+```bash
+git push origin feature-name
+```
+- Open a Pull Request (PR) on GitHub with a description.
+
+## License
+- This project is for educational purposes only.
