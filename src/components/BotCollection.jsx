@@ -6,7 +6,7 @@ function BotCollection() {
   const [bots, setBots] = useState([]); // To store the fetched bots
   const [armyBots, setArmyBots] = useState([]); // To store the enlisted bots
   const [filter, setFilter] = useState(""); // To store filter based on bot class
-  const [sort, setSort] = useState(""); // To store the sort option (e.g., health, damage, armor)
+  const [sort, setSort] = useState(""); // To store the sort option
 
   // Fetch the bots data from the backend (JSON server)
   useEffect(() => {

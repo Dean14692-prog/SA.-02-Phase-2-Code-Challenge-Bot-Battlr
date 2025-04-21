@@ -1,5 +1,4 @@
 # Bot Battlr - React Web Application
-
 ## Project Overview
 
 **Bot Battlr** is a React-based web application where users can view, enlist, and discharge bots. The application uses React to build an interactive user interface and connects to a backend (powered by JSON Server) to manage bot data. It allows users to filter and sort the available bots based on different criteria and manage a collection of bots in their army.
@@ -29,7 +28,7 @@
 Before running the project, ensure the following are installed on your system:
 
 - **Node.js**: [Download Node.js](https://nodejs.org/), which also includes npm (Node Package Manager).
-- **JSON Server**: Install JSON Server globally to mock the backend.
+- **JSON Server**: Install JSON Server globally to mock the backend.git 
 
   To install JSON Server globally, use this command:
   ```bash
