@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import BotCard from "./BotCard";
 import BotArmy from "./BotArmy";
+import BotSpecs from "./BotSpecs"; // Import BotSpecs
 
 function BotCollection() {
   const [bots, setBots] = useState([]);
   const [armyBots, setArmyBots] = useState([]);
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
+  const [selectedBot, setSelectedBot] = useState(null); // New state for selected bot
 
   useEffect(() => {
     fetch("http://localhost:8001/bots")
@@ -47,6 +49,14 @@ function BotCollection() {
 
   const releaseBot = (bot) => {
     setArmyBots(armyBots.filter((b) => b.id !== bot.id));
+  };
+
+  const handleSelectBot = (bot) => {
+    setSelectedBot(bot);
+  };
+
+  const handleBackToList = () => {
+    setSelectedBot(null);
   };
 
   return (
@@ -97,14 +107,29 @@ function BotCollection() {
         </select>
       </div>
 
-      {/* Display list of bots */}
-      <div className="row">
-        {sortedBots.map((bot) => (
-          <div className="col-md-4 mb-4" key={bot.id}>
-            <BotCard bot={bot} enlistBot={enlistBot} />
-          </div>
-        ))}
-      </div>
+      {/* Show BotSpecs if a bot is selected */}
+      {selectedBot ? (
+        <BotSpecs
+          bot={selectedBot}
+          enlistBot={enlistBot}
+          handleBackToList={handleBackToList}
+        />
+      ) : (
+        <div className="row">
+          {sortedBots.map((bot) => (
+            <div
+              className="col-6 col-sm-4 col-md-3 col-lg-2-4 mb-4"
+              key={bot.id}
+            >
+              <BotCard
+                bot={bot}
+                enlistBot={enlistBot}
+                onClick={() => handleSelectBot(bot)}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

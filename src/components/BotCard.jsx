@@ -1,25 +1,28 @@
 import React from "react";
 
-function BotCard({ bot, enlistBot }) {
+function BotCard({ bot, enlistBot, onClick }) {
   return (
-    <div className="card">
+    <div className="card h-100" style={{ height: "300px" }} onClick={onClick}>
       <img
         src={bot.avatar_url}
         alt={bot.name}
         className="card-img-top"
-        style={{ height: "200px", objectFit: "cover" }}
+        style={{ height: "100px", objectFit: "cover" }}
       />
-      <div className="card-body">
-        <h5 className="card-title text-center">{bot.name}</h5>
-        <p className="card-text text-center">
+      <div className="card-body p-2 d-flex flex-column justify-content-between">
+        <h6 className="card-title text-center mb-2">{bot.name}</h6>
+        <p className="card-text text-center mb-2 small">
           Class: {bot.botClass} <br />
           Health: {bot.health} <br />
           Damage: {bot.damage} <br />
           Armor: {bot.armor}
         </p>
         <div className="d-grid">
-          <button onClick={() => enlistBot(bot)} className="btn btn-primary">
-            Enlist Bot
+          <button
+            onClick={() => enlistBot(bot)}
+            className="btn btn-sm btn-primary"
+          >
+            Enlist
           </button>
         </div>
       </div>
